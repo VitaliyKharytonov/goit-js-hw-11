@@ -7,6 +7,7 @@ export function getImage(value) {
     q: value,
     image_type: 'photo',
     orientation: 'horizontal',
+    per_page: 30,
     safesearch: true,
   });
   const url = `${BASE_URL}?${params}`;

@@ -9,14 +9,15 @@ import { imagesTemplate } from './js/render-functions';
 
 const formEl = document.querySelector('.form');
 const listEL = document.querySelector('.gallery');
+const divEl = document.querySelector('.loader');
 
 formEl.addEventListener('submit', event => {
   event.preventDefault();
-  lightbox.refresh();
   listEL.innerHTML = '';
   const value = event.target.elements.value.value;
 
   if (value) {
+    divEl.classList.remove('is-hidden');
     getImage(value)
       .then(data => {
         if (data.hits[0] === undefined) {
@@ -28,6 +29,13 @@ formEl.addEventListener('submit', event => {
         }
         const markup = imagesTemplate(data.hits);
         listEL.insertAdjacentHTML('afterbegin', markup);
+        divEl.classList.add('is-hidden');
+      })
+      .then(() => {
+        const lightbox = new SimpleLightbox('.gallery a', {
+          captionsData: 'alt',
+          captionDelay: 250,
+        });
       })
       .catch(error => console.log(error));
   } else {
@@ -37,9 +45,4 @@ formEl.addEventListener('submit', event => {
     });
   }
   formEl.reset();
-});
-
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
 });
