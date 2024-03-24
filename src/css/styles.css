@@ -100,6 +100,8 @@ ul {
 .loader {
   width: 32px;
   height: 32px;
+  margin: auto;
+  margin-top: 150px;
   position: relative;
   border-radius: 50%;
   color: #ff3d00;
