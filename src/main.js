@@ -20,7 +20,7 @@ formEl.addEventListener('submit', event => {
     divEl.classList.remove('is-hidden');
     getImage(value)
       .then(data => {
-        if (data.hits[0] === undefined) {
+        if (!data.hits.lenght) {
           iziToast.error({
             title: 'Error',
             message:
