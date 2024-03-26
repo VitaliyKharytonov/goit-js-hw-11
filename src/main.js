@@ -9,7 +9,12 @@ import { imagesTemplate } from './js/render-functions';
 
 const formEl = document.querySelector('.form');
 const listEL = document.querySelector('.gallery');
-const divEl = document.querySelector('.loader');
+const loaderEl = document.querySelector('.loader');
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 formEl.addEventListener('submit', event => {
   event.preventDefault();
@@ -17,10 +22,10 @@ formEl.addEventListener('submit', event => {
   const value = event.target.elements.value.value;
 
   if (value) {
-    divEl.classList.remove('is-hidden');
+    loaderEl.classList.remove('is-hidden');
     getImage(value)
       .then(data => {
-        if (!data.hits.lenght) {
+        if (!data.hits.length) {
           iziToast.error({
             title: 'Error',
             message:
@@ -29,13 +34,8 @@ formEl.addEventListener('submit', event => {
         }
         const markup = imagesTemplate(data.hits);
         listEL.insertAdjacentHTML('afterbegin', markup);
-        divEl.classList.add('is-hidden');
-      })
-      .then(() => {
-        const lightbox = new SimpleLightbox('.gallery a', {
-          captionsData: 'alt',
-          captionDelay: 250,
-        });
+        loaderEl.classList.add('is-hidden');
+        lightbox.refresh();
       })
       .catch(error => console.log(error));
   } else {
